@@ -1,0 +1,122 @@
+;/*++
+;
+; Copyright (c) Western Digital Corporation.  All rights reserved.
+;
+; Module Name:
+;
+;    WD_MYCLOUD.inf
+;
+; Abstract:
+;   INF file for installing a MyCloud a PnP-X NAS device.
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Provider=%WDC%
+
+; WD NAS class
+Class=%ClassName%
+ClassGuid={14b62f50-3f15-11aa-ae16-0800200c9aee}    ; Western Digital Nas class
+DriverVer=04/30/2013,2.2.0.1
+
+CatalogFile=WD_MYCLOUD.cat
+
+[DestinationDirs]
+DefaultDestDir = 12                           ; Install files to ..\system32\drivers by default (12)
+CoInstaller_CopyFiles = 11                    ; System Dir( system32 on NT )
+CoInstaller_CopyFiles.NTamd64 = 11            ; System Dir( system32 on NT )
+
+[SourceDisksNames]
+1=%PnPXNasDevice.DeviceDesc%,,,.\
+
+[SourceDisksFiles]
+WD_MYCLOUD-x86.dll=1
+WD_MYCLOUD-x64.dll=1
+
+[Manufacturer]                ; Should list all device manufacturer/model combinations here
+%WDC%=PnPXNasDevice, NTamd64
+
+
+; Model Device Description Install Section        HWIDs, Compatible IDs
+; -----------              -------                --------
+
+[PnPXNasDevice]         ; Model specific install section list (x86 Section)
+%PnPXNasDevice.Media.DeviceDesc%=PnPXNasDevice_Install, UMB\VEN_011A&DEV_0063&REV_01
+%PnPXNasDevice.DeviceDesc%=PnPXNasDevice_Install, UMB\VEN_011A&DEV_0064&REV_01
+
+[PnPXNasDevice.NTamd64] ; Model specific install section list (x64 Section)
+%PnPXNasDevice.Media.DeviceDesc%=PnPXNasDevice_Install.NTamd64, UMB\VEN_011A&DEV_0063&REV_01
+%PnPXNasDevice.DeviceDesc%=PnPXNasDevice_Install.NTamd64, UMB\VEN_011A&DEV_0064&REV_01
+
+; ===================== Install Sections =======================
+
+;
+; 32-bit Section
+;
+[PnPXNasDevice_Install]                 ; Optional section to add device specific information to the registry
+AddReg=PnPXNasDevice_Install.HW.AddReg
+
+
+[PnPXNasDevice_Install.Services]
+AddService = , 0x00000002   ; null service install
+
+;
+; 64-bit (x64) Section
+;
+[PnPXNasDevice_Install.NTamd64]         ; Optional section to add device specific information to the registry
+AddReg=PnPXNasDevice_Install.HW.AddReg
+
+
+[PnPXNasDevice_Install.NTamd64.Services]
+AddService = , 0x00000002   ; null service install
+
+;
+; common section shared between 32-bit & 64-bit installers
+; 
+[PnPXNasDevice_Install.HW.AddReg]
+HKCR,NetworkExplorerPlugins\VEN_011A&DEV_0064&REV_01\DefaultIcon,,0x00000000,"%SystemRoot%\System32\WD_MYCLOUD_2_2_0.dll,-101"
+
+;-------------- Coinstaller installation -----------------------------------------
+
+;
+; 32-bit Section
+;
+[PnPXNasDevice_Install.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WD_MYCLOUD_2_2_0.dll,WD_MYCLOUD-x86.dll
+
+;
+; 64-bit (x64) Section
+;
+[PnPXNasDevice_Install.NTamd64.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles.NTamd64
+
+[CoInstaller_CopyFiles.NTamd64]
+WD_MYCLOUD_2_2_0.dll,WD_MYCLOUD-x64.dll
+
+;
+; common section shared between 32-bit & 64-bit installers
+; 
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000,"WD_MYCLOUD_2_2_0.dll,RallyD"
+
+
+; ===================== Strings Sections =======================
+;
+; Strings that are referenced throughout the INF
+;
+[Strings]
+WDC = "Western Digital Corporation"
+ClassName = "Western Digital NAS"
+
+; Enter the device description for your NAS device here:
+PnPXNasDevice.DeviceDesc = "My Cloud Network Storage"
+PnPXNasDevice.Media.DeviceDesc = "My Cloud Network Media Server"
+PnPXNasDevice.Storage.DeviceDesc = "My Cloud Network Storage"
+
+; End of File

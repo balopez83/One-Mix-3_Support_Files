@@ -1,0 +1,133 @@
+;
+; VMUSB Setup Information file
+; Copyright (c) VMware, Inc. 1998-2016
+;
+
+;******************************************************************************
+; Version section
+;------------------------------------------------------------------------------
+[Version]
+Signature="$Windows NT$"
+Provider=%S_Provider%
+DriverVer=07/12/2016,4.2.0.0
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+CatalogFile=vmusb.cat
+
+;******************************************************************************
+; Manufacturer section
+;------------------------------------------------------------------------------
+[Manufacturer]
+%S_Mfg%=_Devices, NTx86, NTamd64, NTx86.6.1, NTamd64.6.1, NTx86.6.2, NTamd64.6.2
+
+
+;******************************************************************************
+; Device section
+;------------------------------------------------------------------------------
+
+; Windows 2000
+[_Devices]
+; not supported
+
+; Windows XP and Vista
+[_Devices.NTx86]
+; not supported
+
+; 64-bit Windows XP and Vista
+[_Devices.NTamd64]
+; not supported
+
+; Windows 7
+[_Devices.NTx86.6.1]
+; not supported
+
+; Windows 8 and greater
+[_Devices.NTx86.6.2]
+; not supported
+
+; 64-bit Windows Windows 7
+[_Devices.NTamd64.6.1]
+; not supported
+
+; 64-bit Windows 8 and greater
+[_Devices.NTamd64.6.2]
+%S_DeviceDesc1%=_Install1, USB\Vid_0e0f&Pid_0001
+
+;******************************************************************************
+; Install section ( Device1 )
+;------------------------------------------------------------------------------
+
+; driver-install
+[_Install1.NT]
+CopyFiles=_CopyFiles_sys
+
+; service-install
+[_Install1.NT.Services]
+AddService = %S_DriverName%, 0x00000002, _NT_AddService, _NT_EventLog
+
+;******************************************************************************
+; NT Service sections
+;------------------------------------------------------------------------------
+[_NT_AddService]
+DisplayName    = %S_ServiceDisplayName%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; demand
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\%S_DriverName%.sys
+
+[_NT_EventLog]
+AddReg=_NT_EventLog_AddReg
+
+[_NT_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\%S_DriverName%.sys"
+HKR,,TypesSupported,  0x00010001,7
+
+
+;******************************************************************************
+; Copy Files section
+;------------------------------------------------------------------------------
+[_CopyFiles_sys]
+vmusb.sys
+
+
+;******************************************************************************
+; Destination Directories
+;------------------------------------------------------------------------------
+[DestinationDirs]
+DefaultDestDir  = 12    ; DRIVER directory
+_CopyFiles_sys = 12
+
+
+;******************************************************************************
+; Disk Layout
+;------------------------------------------------------------------------------
+[SourceDisksNames]
+1=%S_DiskName%,,
+
+[SourceDisksFiles]
+vmusb.sys=1
+
+
+;******************************************************************************
+; Text Strings
+;------------------------------------------------------------------------------
+[Strings]
+
+; provider name
+S_Provider="VMware, Inc."
+
+; manufacturer name
+S_Mfg="VMware, Inc."
+
+; device description
+S_DeviceDesc1="VMware USB Device"
+
+; disk name
+S_DiskName="VMware USB Driver Disk"
+
+; file name of driver executable
+; If the name is modified, the _CopyFiles_sys section must also be modified !
+S_DriverName="vmusb"
+
+; service display name
+S_ServiceDisplayName="VMware USB Client Driver"

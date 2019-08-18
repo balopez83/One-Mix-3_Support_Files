@@ -1,0 +1,651 @@
+;-------------------------------------------------------------------------
+; netadapter.inf
+;
+; Copyright (c) 1993-1999, Microsoft Corporation
+; Copyright (c) 1999-2018 VMware, Inc.  All rights reserved.
+;-------------------------------------------------------------------------
+[Version]
+ Signature   = "$Windows NT$"
+ Class       = Net
+ ClassGUID   = {4d36e972-e325-11ce-bfc1-08002be10318}
+ Provider    = %CompanyName%
+ DriverVer   = 10/16/2018,14.0.0.2
+ CatalogFile = vmnetadapter.cat
+
+[Manufacturer]
+ %CompanyName% = VMware, NTx86.6.1, NTia64, NTamd64.6.1
+
+; Windows 2000
+[VMware]
+; no longer supported
+
+; Windows 7 and later
+[VMware.NTx86.6.1]
+ %VMnetAdapter0.DeviceDesc% = VMnetAdapter0.Install, *VMnetAdapter0
+ %VMnetAdapter1.DeviceDesc% = VMnetAdapter1.Install, *VMnetAdapter1
+ %VMnetAdapter2.DeviceDesc% = VMnetAdapter2.Install, *VMnetAdapter2
+ %VMnetAdapter3.DeviceDesc% = VMnetAdapter3.Install, *VMnetAdapter3
+ %VMnetAdapter4.DeviceDesc% = VMnetAdapter4.Install, *VMnetAdapter4
+ %VMnetAdapter5.DeviceDesc% = VMnetAdapter5.Install, *VMnetAdapter5
+ %VMnetAdapter6.DeviceDesc% = VMnetAdapter6.Install, *VMnetAdapter6
+ %VMnetAdapter7.DeviceDesc% = VMnetAdapter7.Install, *VMnetAdapter7
+ %VMnetAdapter8.DeviceDesc% = VMnetAdapter8.Install, *VMnetAdapter8
+ %VMnetAdapter9.DeviceDesc% = VMnetAdapter9.Install, *VMnetAdapter9
+ %VMnetAdapter10.DeviceDesc% = VMnetAdapter10.Install, *VMnetAdapter10
+ %VMnetAdapter11.DeviceDesc% = VMnetAdapter11.Install, *VMnetAdapter11
+ %VMnetAdapter12.DeviceDesc% = VMnetAdapter12.Install, *VMnetAdapter12
+ %VMnetAdapter13.DeviceDesc% = VMnetAdapter13.Install, *VMnetAdapter13
+ %VMnetAdapter14.DeviceDesc% = VMnetAdapter14.Install, *VMnetAdapter14
+ %VMnetAdapter15.DeviceDesc% = VMnetAdapter15.Install, *VMnetAdapter15
+ %VMnetAdapter16.DeviceDesc% = VMnetAdapter16.Install, *VMnetAdapter16
+ %VMnetAdapter17.DeviceDesc% = VMnetAdapter17.Install, *VMnetAdapter17
+ %VMnetAdapter18.DeviceDesc% = VMnetAdapter18.Install, *VMnetAdapter18
+ %VMnetAdapter19.DeviceDesc% = VMnetAdapter19.Install, *VMnetAdapter19
+
+; Windows 7 and later (x64)
+[VMware.NTamd64.6.1]
+ %VMnetAdapter0.DeviceDesc% = VMnetAdapter0.Install, *VMnetAdapter0
+ %VMnetAdapter1.DeviceDesc% = VMnetAdapter1.Install, *VMnetAdapter1
+ %VMnetAdapter2.DeviceDesc% = VMnetAdapter2.Install, *VMnetAdapter2
+ %VMnetAdapter3.DeviceDesc% = VMnetAdapter3.Install, *VMnetAdapter3
+ %VMnetAdapter4.DeviceDesc% = VMnetAdapter4.Install, *VMnetAdapter4
+ %VMnetAdapter5.DeviceDesc% = VMnetAdapter5.Install, *VMnetAdapter5
+ %VMnetAdapter6.DeviceDesc% = VMnetAdapter6.Install, *VMnetAdapter6
+ %VMnetAdapter7.DeviceDesc% = VMnetAdapter7.Install, *VMnetAdapter7
+ %VMnetAdapter8.DeviceDesc% = VMnetAdapter8.Install, *VMnetAdapter8
+ %VMnetAdapter9.DeviceDesc% = VMnetAdapter9.Install, *VMnetAdapter9
+ %VMnetAdapter10.DeviceDesc% = VMnetAdapter10.Install, *VMnetAdapter10
+ %VMnetAdapter11.DeviceDesc% = VMnetAdapter11.Install, *VMnetAdapter11
+ %VMnetAdapter12.DeviceDesc% = VMnetAdapter12.Install, *VMnetAdapter12
+ %VMnetAdapter13.DeviceDesc% = VMnetAdapter13.Install, *VMnetAdapter13
+ %VMnetAdapter14.DeviceDesc% = VMnetAdapter14.Install, *VMnetAdapter14
+ %VMnetAdapter15.DeviceDesc% = VMnetAdapter15.Install, *VMnetAdapter15
+ %VMnetAdapter16.DeviceDesc% = VMnetAdapter16.Install, *VMnetAdapter16
+ %VMnetAdapter17.DeviceDesc% = VMnetAdapter17.Install, *VMnetAdapter17
+ %VMnetAdapter18.DeviceDesc% = VMnetAdapter18.Install, *VMnetAdapter18
+ %VMnetAdapter19.DeviceDesc% = VMnetAdapter19.Install, *VMnetAdapter19
+
+; Itanium-based systems (not supported)
+[VMware.NTia64]
+
+[ControlFlags]
+; Exclude all devices from Select Device list
+ExcludeFromSelect = *          
+
+; ------------------------------------------------------------------------
+; File copy
+; ------------------------------------------------------------------------
+[SourceDisksNames]
+ 1=%DiskDescription%,"",,
+
+[SourceDisksFiles]
+ vmnet.sys=1
+ vmnetadapter.sys=1
+ vnetinst.dll=1
+
+[DestinationDirs]
+ DefaultDestDir = 12
+ VMnetAdapter.CopyFiles.Sys   = 12   ; %windir%\System32\drivers
+ VMnetlib.CopyFiles           = 11   ; %windir%\System32
+
+[VMnetAdapter.CopyFiles.Sys]
+ vmnet.sys,,,2
+ vmnetadapter.sys,,,2
+
+[VMnetlib.CopyFiles]
+ vnetinst.dll,,,2
+
+;-------------------------------------------------------------------------
+; Installation Section
+;-------------------------------------------------------------------------
+[VMnetAdapter0.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter0.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter0.Install.CoInstallers]
+    AddReg = VMnetAdapter0.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter0.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter1.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter1.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter1.Install.CoInstallers]
+    AddReg = VMnetAdapter1.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter1.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter2.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter2.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter2.Install.CoInstallers]
+    AddReg = VMnetAdapter2.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter2.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter3.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter3.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter3.Install.CoInstallers]
+    AddReg = VMnetAdapter3.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter3.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter4.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter4.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter4.Install.CoInstallers]
+    AddReg = VMnetAdapter4.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter4.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter5.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter5.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter5.Install.CoInstallers]
+    AddReg = VMnetAdapter5.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter5.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter6.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter6.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter6.Install.CoInstallers]
+    AddReg = VMnetAdapter6.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter6.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter7.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter7.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter7.Install.CoInstallers]
+    AddReg = VMnetAdapter7.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter7.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter8.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter8.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter8.Install.CoInstallers]
+    AddReg = VMnetAdapter8.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter8.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter9.Install]
+ Characteristics	= 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg			= VMnetAdapter.Reg, VMnetAdapter9.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter9.Install.CoInstallers]
+    AddReg = VMnetAdapter9.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter9.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter10.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter10.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter10.Install.CoInstallers]
+    AddReg = VMnetAdapter10.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter10.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter11.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter11.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter11.Install.CoInstallers]
+    AddReg = VMnetAdapter11.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter11.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter12.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter12.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter12.Install.CoInstallers]
+    AddReg = VMnetAdapter12.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter12.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter13.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter13.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter13.Install.CoInstallers]
+    AddReg = VMnetAdapter13.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter13.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter14.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter14.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter14.Install.CoInstallers]
+    AddReg = VMnetAdapter14.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter14.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter15.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter15.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter15.Install.CoInstallers]
+    AddReg = VMnetAdapter15.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter15.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter16.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter16.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter16.Install.CoInstallers]
+    AddReg = VMnetAdapter16.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter16.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter17.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter17.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter17.Install.CoInstallers]
+    AddReg = VMnetAdapter17.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter17.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter18.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter18.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter18.Install.CoInstallers]
+    AddReg = VMnetAdapter18.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter18.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+[VMnetAdapter19.Install]
+ Characteristics  = 0x81  ; NCF_VIRTUAL | NCF_HAS_UI
+ AddReg        = VMnetAdapter.Reg, VMnetAdapter19.Ndi
+ CopyFiles              = VMnetAdapter.CopyFiles.Sys
+*IfType                 = 6          ; IF_TYPE_ETHERNET_CSMACD
+*MediaType              = 0          ; NdisMedium802_3
+*PhysicalMediaType      = 14         ; NdisPhysicalMedium802_3
+[VMnetAdapter19.Install.CoInstallers]
+    AddReg = VMnetAdapter19.Install.CoInstallers_AddReg
+    CopyFiles = VMnetlib.CopyFiles
+[VMnetAdapter19.Install.CoInstallers_AddReg]
+    HKR,,CoInstallers32,0x00010000,"vnetinst.dll,VNL_AdapterCoinstaller"
+
+;-------------------------------------------------------------------------
+; Service installation
+;-------------------------------------------------------------------------
+[VMnetAdapter0.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter1.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter2.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter3.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter4.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter5.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter6.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter7.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter8.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter9.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+		VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+		%VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter10.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter11.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter12.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter13.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter14.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter15.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter16.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter17.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter18.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+[VMnetAdapter19.Install.Services]
+ AddService = %VMnetAdapter.Service.Name%, 2, \
+                VMnetAdapter.Service, VMnetAdapter.EventLog,, \
+                %VMnetAdapter.EventLog.Name%
+
+;-------------------------------------------------------------------------
+; Generic service installation
+;-------------------------------------------------------------------------
+[VMnetAdapter.Service]
+ DisplayName    = %VMnetAdapter.Service.DispName%
+ Description	= %VMnetAdapter.Service.Desc%
+ ServiceType    = 1    ; SERVICE_KERNEL_DRIVER
+ StartType      = 3    ; SERVICE_DEMAND_START
+ ErrorControl   = 1    ; SERVICE_ERROR_NORMAL
+ ServiceBinary  = %12%\vmnetadapter.sys
+ LoadOrderGroup = NDIS
+
+;-------------------------------------------------------------------------
+; Ndi installation
+;-------------------------------------------------------------------------
+[VMnetAdapter0.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet0"
+
+[VMnetAdapter1.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet1"
+
+[VMnetAdapter2.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet2"
+
+[VMnetAdapter3.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet3"
+
+[VMnetAdapter4.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet4"
+
+[VMnetAdapter5.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet5"
+
+[VMnetAdapter6.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet6"
+
+[VMnetAdapter7.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet7"
+
+[VMnetAdapter8.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet8"
+
+[VMnetAdapter9.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet9"
+
+[VMnetAdapter10.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet10"
+
+[VMnetAdapter11.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet11"
+
+[VMnetAdapter12.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet12"
+
+[VMnetAdapter13.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet13"
+
+[VMnetAdapter14.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet14"
+
+[VMnetAdapter15.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet15"
+
+[VMnetAdapter16.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet16"
+
+[VMnetAdapter17.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet17"
+
+[VMnetAdapter18.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet18"
+
+[VMnetAdapter19.Ndi]
+ HKR,, VMnet, 0, "\DosDevices\VMnet19"
+
+;-------------------------------------------------------------------------
+; In the contexts where this section is referenced, 
+; HKR is HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Class\
+; <ClassGUID>\<device-instance-id>
+;-------------------------------------------------------------------------
+[VMnetAdapter.Reg]
+; Associate a device driver service to the device
+ HKR, Ndi, Service, 0, %VMnetAdapter.Service.Name%
+ HKR, Ndi\Interfaces, LowerRange, 0,  "nolower"
+ HKR, Ndi\Interfaces, UpperRange, 0,  "ndis5"
+
+HKR, Ndi\params\EnableWakeOnLan, ParamDesc, 0, %WakeOnLan%
+HKR, Ndi\params\EnableWakeOnLan, Type,      0, "enum"
+HKR, Ndi\params\EnableWakeOnLan, Default,   0, "1"
+HKR, Ndi\params\EnableWakeOnLan, Optional,  0, "0"
+HKR, Ndi\params\EnableWakeOnLan\enum, "0",  0, %Disabled%
+HKR, Ndi\params\EnableWakeOnLan\enum, "1",  0, %Enabled%
+
+HKR, Ndi\params\*WakeOnPattern, ParamDesc, 0, %WakeOnPattern%
+HKR, Ndi\params\*WakeOnPattern, Type,      0, "enum"
+HKR, Ndi\params\*WakeOnPattern, Default,   0, "1"
+HKR, Ndi\params\*WakeOnPattern, Optional,  0, "0"
+HKR, Ndi\params\*WakeOnPattern\enum, "0",  0, %Disabled%
+HKR, Ndi\params\*WakeOnPattern\enum, "1",  0, %Enabled%
+
+HKR, Ndi\params\*WakeOnMagicPacket, ParamDesc, 0, %WakeOnMagic%
+HKR, Ndi\params\*WakeOnMagicPacket, Type,      0, "enum"
+HKR, Ndi\params\*WakeOnMagicPacket, Default,   0, "1"
+HKR, Ndi\params\*WakeOnMagicPacket, Optional,  0, "0"
+HKR, Ndi\params\*WakeOnMagicPacket\enum, "0",  0, %Disabled%
+HKR, Ndi\params\*WakeOnMagicPacket\enum, "1",  0, %Enabled%
+
+HKR, Ndi\params\*PriorityVLANTag, ParamDesc, 0, %PriorityVLANTag%
+HKR, Ndi\params\*PriorityVLANTag, Type,      0, "enum"
+HKR, Ndi\params\*PriorityVLANTag, Default,   0, "3"
+HKR, Ndi\params\*PriorityVLANTag, Optional,  0, "0"
+HKR, Ndi\params\*PriorityVLANTag\enum, "0",  0, %PriorityVlanDisabled%
+HKR, Ndi\params\*PriorityVLANTag\enum, "1",  0, %PriorityEnabled%
+HKR, Ndi\params\*PriorityVLANTag\enum, "2",  0, %VlanEnabled%
+HKR, Ndi\params\*PriorityVLANTag\enum, "3",  0, %PriorityVlanEnabled%
+
+HKR, Ndi\params\VlanId, ParamDesc, 0, %VlanId%
+HKR, Ndi\params\VlanId, Type,      0, "dword"
+HKR, Ndi\params\VlanId, Default,   0, "0"
+HKR, Ndi\params\VlanId, Optional,  0, "1"
+HKR, Ndi\params\VlanId, Min,       0, "0"
+HKR, Ndi\params\VlanId, Max,       0, "4095"
+HKR, Ndi\params\VlanId, Step,      0, "1"
+
+HKR, , *NdisDeviceType, 0x00010001, 1
+
+;-------------------------------------------------------------------------
+; EventLog installation
+;-------------------------------------------------------------------------
+[VMnetAdapter.EventLog]
+ AddReg = VMnetAdapter.EventLog.Reg
+
+;-------------------------------------------------------------------------
+; Registry settings for the event-logging of the device driver service
+; In the contexts where this section is referenced, 
+; HKR is HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\EventLog\
+; %VMnetAdapter.EventLog.Type%\%VMnetAdapter.EventLog.Name%
+;-------------------------------------------------------------------------
+[VMnetAdapter.EventLog.Reg]
+ HKR,, EventMessageFile, 0x00020000, "%11%\IoLogMsg.dll;%12%\vmnetadapter.sys"
+ HKR,, TypesSupported, 0x00010001, 7
+
+;-------------------------------------------------------------------------
+; String definitions
+;-------------------------------------------------------------------------
+[Strings]
+ ; Constants
+ VMnetAdapter.Service.Name  = "VMnetAdapter"
+ VMnetAdapter.EventLog.Type = "System" ; default value
+ VMnetAdapter.EventLog.Name = "VMnetAdapter" ; default value
+ DiskDescription            = "VMware install disk"
+ WakeOnLan                  = "Wake on LAN"
+ WakeOnPattern              = "Wake on pattern match"
+ WakeOnMagic                = "Wake on magic packet"
+ PriorityVLANTag            = "Priority / VLAN tag"
+ PriorityVlanDisabled       = "Priority & VLAN Disabled"
+ PriorityEnabled            = "Priority Enabled"
+ VlanEnabled                = "VLAN Enabled"
+ PriorityVlanEnabled        = "Priority & VLAN Enabled"
+ VlanId                     = "VLAN ID"
+ Enabled                    = "Enabled"
+ Disabled                   = "Disabled"
+
+
+ ; Localization (default locale)
+ CompanyName                   = "VMware, Inc."
+ VMnetAdapter0.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet0"
+ VMnetAdapter1.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet1"
+ VMnetAdapter2.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet2"
+ VMnetAdapter3.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet3"
+ VMnetAdapter4.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet4"
+ VMnetAdapter5.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet5"
+ VMnetAdapter6.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet6"
+ VMnetAdapter7.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet7"
+ VMnetAdapter8.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet8"
+ VMnetAdapter9.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet9"
+ VMnetAdapter10.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet10"
+ VMnetAdapter11.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet11"
+ VMnetAdapter12.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet12"
+ VMnetAdapter13.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet13"
+ VMnetAdapter14.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet14"
+ VMnetAdapter15.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet15"
+ VMnetAdapter16.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet16"
+ VMnetAdapter17.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet17"
+ VMnetAdapter18.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet18"
+ VMnetAdapter19.DeviceDesc      = "VMware Virtual Ethernet Adapter for VMnet19"
+ VMnetAdapter.Service.DispName = "VMware Virtual Ethernet Adapter Driver"
+ VMnetAdapter.Service.Desc     = "Driver for VMware's Virtual Ethernet Adapters Ver. 2"

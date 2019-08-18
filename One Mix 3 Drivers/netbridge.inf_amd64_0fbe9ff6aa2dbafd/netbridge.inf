@@ -1,0 +1,129 @@
+;-------------------------------------------------------------------------
+; netbridge.inf -- VMnet Bridge Protocol Driver
+;
+; Copyright (c) 1993-1999, Microsoft Corporation
+; Copyright 1999-2018 VMware, Inc.  All rights reserved.
+;-------------------------------------------------------------------------
+[Version]
+ Signature   = "$Windows NT$"
+ Class       = NetService
+ ClassGUID   = {4D36E974-E325-11CE-BFC1-08002BE10318}
+ Provider    = %CompanyName%
+ DriverVer   = 10/16/2018,14.0.0.2
+ CatalogFile = vmnetbridge.cat
+
+[Manufacturer]
+ %CompanyName% = VMware, NTx86.6.1, NTia64, NTamd64.6.1
+
+; Windows 2000
+[VMware]
+; no longer supported
+
+; Windows 7 and later
+[VMware.NTx86.6.1]
+ %VMware_Desc% = VMnetBridge.Install, vmware_bridge
+
+; Windows 7 and later (x64)
+[VMware.NTamd64.6.1]
+ %VMware_Desc% = VMnetBridge.Install, vmware_bridge
+
+; Itanium-based systems (not supported)
+[VMware.NTia64]
+
+;-------------------------------------------------------------------------
+; Installation Section
+;-------------------------------------------------------------------------
+[VMnetBridge.Install]
+ AddReg=VMnetBridge.Ndi
+ Characteristics = 0x4080 ; NCF_NDIS_PROTOCOL
+ CopyFiles       = VMnetBridge.CopyFiles.Init, VMnetBridge.CopyFiles.Sys
+
+; ------------------------------------------------------------------------
+; File copy
+; ------------------------------------------------------------------------
+[SourceDisksNames]
+ 1=%DiskDescription%,"",,
+
+[SourceDisksFiles]
+ vmnet.sys=1
+ vmnetbridge.dll=1
+ vmnetbridge.sys=1
+
+[DestinationDirs]
+ DefaultDestDir = 12
+ VMnetBridge.CopyFiles.Init  = 11   ; %windir%\System32
+ VMnetBridge.CopyFiles.Sys   = 12   ; %windir%\System32\drivers
+
+; Copying of vmnetbridge.dll
+[VMnetBridge.CopyFiles.Init]
+ vmnetbridge.dll,,,2
+
+[VMnetBridge.CopyFiles.Sys]
+ vmnet.sys,,,2
+ vmnetbridge.sys,,,2
+
+;-------------------------------------------------------------------------
+; Ndi installation support
+;-------------------------------------------------------------------------
+[VMnetBridge.Ndi]
+ HKR,Ndi,Service,,VMnetBridge
+ HKR,Ndi,HelpText,,%VMware_HelpText%
+ HKR, Ndi\Interfaces, UpperRange,, noupper
+ HKR, Ndi\Interfaces, LowerRange,,"ndis5,ndis4"
+
+;-------------------------------------------------------------------------
+; Keys required if a Notify object is present
+;-------------------------------------------------------------------------
+ HKR, Ndi, ClsID,        , {3d09c1ca-2bcc-40b7-b9bb-3f3ec143a87b}
+ HKR, Ndi, ComponentDll, , vmnetbridge.dll
+
+;-------------------------------------------------------------------------
+; Service installation support
+;-------------------------------------------------------------------------
+[VMnetBridge.Install.Services]
+ AddService=VMnetBridge,2,VMnetBridge.Service, VMnetBridge.EventLog
+
+[VMnetBridge.Service]
+ DisplayName     = %VMware_Desc%
+ ServiceType     = 1 ;SERVICE_KERNEL_DRIVER
+ StartType       = 2 ;SERVICE_AUTO_START
+ ErrorControl    = 1 ;SERVICE_ERROR_NORMAL
+ ServiceBinary   = %12%\vmnetbridge.sys
+ LoadOrderGroup  = "PNP_TDI"
+ AddReg          = VMnetBridge.Service.Reg
+ Description     = %VMware_Desc%
+
+[VMnetBridge.Service.Reg]
+ HKLM,"System\CurrentControlSet\Services\VMnetBridge","TextModeFlags",%REG_DWORD%,0x0001
+; Don't delete -- edward
+ HKR,"Parameters\Adapters","Test",%REG_DWORD%,0
+
+[VMnetBridge.EventLog]
+ AddReg = VMnetBridge.EventLog.Reg
+
+[VMnetBridge.EventLog.Reg]
+ HKR,,EventMessageFile,0x00020000,"%11%\IoLogMsg.dll;%12%\vmnetbridge.sys"
+ HKR,,TypesSupported,0x00010001,7
+
+
+;-------------------------------------------------------------------------
+; Support for removal of static registry settings
+;-------------------------------------------------------------------------
+[VMnetBridge.Install.Remove]
+ DelReg=VMnetBridge.Static.Reg
+
+[VMnetBridge.Install.Remove.Services]
+ DelService=VMnetBridge
+
+[VMnetBridge.Static.Reg]
+ HKLM,"System\CurrentControlSet\Services\VMnetBridge","TextModeFlags"
+
+;-------------------------------------------------------------------------
+; String definitions
+;-------------------------------------------------------------------------
+[Strings]
+ CompanyName = "VMware, Inc."
+ VMware_Desc = "VMware Bridge Protocol"
+ VMware_HelpText = "Gives virtual machines access to physical networks."
+ DiskDescription = "VMware install disk"
+ REG_DWORD = 0x10001
